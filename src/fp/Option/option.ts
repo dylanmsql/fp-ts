@@ -1,9 +1,9 @@
-import { boolean } from "fp-ts";
+import { Either, isRight } from "../Either/either";
 import { Nullable } from "../Nullable/nullable";
 
 export interface None {};
 export interface Some<A> {
-    some: A,
+    readonly some: A,
 }
 export type Option<A> = None | Some<A>;
 export const none: Option<never> = {};
@@ -20,3 +20,4 @@ export const map = <A, B>(f: (a: A) => B) => (fa: Option<A>): Option<B> => isSom
 export const flatten = <A>(ffa: Option<Option<A>>): Option<A> => isSome(ffa) ? ffa.some : none;
 export const flatMap = <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>): Option<B> => isSome(ma) ? f(ma.some) : none;
 export const fromPredicate = <A>(f: (a: A) => boolean) => (a: A): Option<A> => f(a) ? some(a) : none;
+export const fromEither = <A>(fa: Either<unknown, A>): Option<A> => isRight(fa) ? some(fa.right) : none;

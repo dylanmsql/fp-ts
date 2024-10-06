@@ -1,3 +1,4 @@
+import * as E from '../Either/either';
 import { identity, pipe } from '../function';
 import { Nullable } from '../Nullable/nullable';
 import * as O from './option';
@@ -79,3 +80,6 @@ const isEven = (a: number) => a % 2 === 0;
 const getEven = O.fromPredicate(isEven);
 console.log(getEven(2));
 console.log(getEven(3));
+
+const either: E.Either<string, number> = E.right(2);
+console.log(either);
