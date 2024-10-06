@@ -1,7 +1,6 @@
 import { identity, pipe } from '../function';
 import { Nullable } from '../Nullable/nullable';
 import * as O from './option';
-import * as N from '../Nullable/nullable'
 
 const inverse = (x:number): O.Option<number> => 
     x === 0 
@@ -45,3 +44,25 @@ const safeInverseGetOrElse = (x: number): number =>
 
 console.log(safeInverseGetOrElse(0));
 console.log(safeInverseGetOrElse(5));
+
+const value: Nullable<number> = 3;
+const nullValue: Nullable<number> = null;
+
+console.log(O.fromNullable(value));
+console.log(O.fromNullable(nullValue));
+
+const head = <A>(as: ReadonlyArray<A>): O.Option<A> => as.length === 0 ? O.none : O.some(as[0]);
+const toUppercase = (value: string) => value.toUpperCase();
+const addPrefix = (prefix: string) => (value: string) => `${prefix}${value}`;
+
+const getBestMovie = (titles: ReadonlyArray<string>): O.Option<string> => 
+    pipe(
+        titles,
+        head,
+        O.map(toUppercase),
+        O.map(addPrefix('BEST - '))
+    );
+
+const movies = ['Le seigneur des anneaux', "de la merde"];
+
+console.log(getBestMovie(movies));

@@ -13,3 +13,5 @@ export const match = <A, B>(onNone: () => B, onSome: (a: A) => B) => (ma: Option
 export const fold = match;
 export const getOrElse = <A>(onNone: () => A) => (ma: Option<A>): A => isSome(ma) ? ma.some : onNone();
 // export const getOrElseW = <B>(onNone: () => B) => <A>(ma: Option<A>): A | B => isSome(ma) ? ma.some : onNone();
+export const fromNullable = <A>(nullable: Nullable<A>): Option<A> => nullable === null || nullable === undefined ? none : some(nullable);
+export const map = <A, B>(f: (a: A) => B) => (fa: Option<A>): Option<B> => isSome(fa) ? some(f(fa.some)) : none;
