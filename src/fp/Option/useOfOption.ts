@@ -12,7 +12,7 @@ const getUiMessageWithInverse = (x: number): string =>
     pipe(
         x,
         inverse,
-        O.match(
+        O.fold(
             () => 'No inverse',
             (a) => `The inverse value from ${x} is ${a}`
         )
@@ -25,7 +25,7 @@ const safeInverse = (x: number): number =>
     pipe(
         x,
         inverse,
-        O.match(
+        O.fold(
             () => 0,
             identity
         )
