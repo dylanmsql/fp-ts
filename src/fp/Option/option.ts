@@ -7,9 +7,9 @@ export interface Some<A> {
     readonly some: A,
 }
 export type Option<A> = None | Some<A>;
-export const none: Option<never> = {};
 
 // Constructor
+export const none: Option<never> = {};
 export const some = <A = never>(a: A): Option<A> => ({ some: a });
 
 // Helping Methods
