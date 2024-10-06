@@ -33,7 +33,7 @@ const safeInverse = (x: number): number =>
 console.log(safeInverse(0));
 console.log(safeInverse(5));
 
-const safeInverseGetOrElse = (x: number): number => 
+const safeInverseGetOrElse = (x: number) => 
     pipe(
         x,
         inverse,
@@ -64,5 +64,13 @@ const getBestMovie = (titles: ReadonlyArray<string>): O.Option<string> =>
     );
 
 const movies = ['Le seigneur des anneaux', "de la merde"];
-
 console.log(getBestMovie(movies));
+
+const inverseHead = (ns: ReadonlyArray<number>) =>
+    pipe(
+      ns,
+      head,
+      O.flatMap(inverse)
+    );
+
+console.log(inverseHead([5,6,7]));
