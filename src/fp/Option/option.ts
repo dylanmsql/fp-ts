@@ -1,5 +1,5 @@
 import { Either, isRight } from "../Either/either";
-import { Nullable } from "../Nullable/nullable";
+import { isNullOrUndefined, Nullable } from "../Nullable/nullable";
 
 // Model
 export interface None {};
@@ -26,7 +26,7 @@ export const flatten = <A>(ffa: Option<Option<A>>): Option<A> => isSome(ffa) ? f
 export const flatMap = <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>): Option<B> => isSome(ma) ? f(ma.some) : none;
 
 // Conversions
-export const fromNullable = <A>(nullable: Nullable<A>): Option<A> => nullable === null || nullable === undefined ? none : some(nullable);
+export const fromNullable = <A>(n: Nullable<A>): Option<A> => isNullOrUndefined(n) ? none : some(n);
 export const toNullable = <A>(sa: Option<A>): Nullable<A> => isSome(sa) ? sa.some : null;
 export const toUndefined = <A>(sa: Option<A>): Nullable<A> => isSome(sa) ? sa.some : undefined;
 export const fromPredicate = <A>(f: (a: A) => boolean) => (a: A): Option<A> => f(a) ? some(a) : none;
