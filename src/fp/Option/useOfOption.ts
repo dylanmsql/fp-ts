@@ -74,3 +74,8 @@ const inverseHead = (ns: ReadonlyArray<number>) =>
     );
 
 console.log(inverseHead([5,6,7]));
+
+const isEven = (a: number) => a % 2 === 0;
+const getEven = O.fromPredicate(isEven);
+console.log(getEven(2));
+console.log(getEven(3));

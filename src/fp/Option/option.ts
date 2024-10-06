@@ -1,3 +1,4 @@
+import { boolean } from "fp-ts";
 import { Nullable } from "../Nullable/nullable";
 
 export interface None {};
@@ -18,3 +19,4 @@ export const fromNullable = <A>(nullable: Nullable<A>): Option<A> => nullable ==
 export const map = <A, B>(f: (a: A) => B) => (fa: Option<A>): Option<B> => isSome(fa) ? some(f(fa.some)) : none;
 export const flatten = <A>(ffa: Option<Option<A>>): Option<A> => isSome(ffa) ? ffa.some : none;
 export const flatMap = <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>): Option<B> => isSome(ma) ? f(ma.some) : none;
+export const fromPredicate = <A>(f: (a: A) => boolean) => (a: A): Option<A> => f(a) ? some(a) : none;
