@@ -1,4 +1,5 @@
 import * as E from "./either";
+import * as J from "../Json/json";
 import { makeFoldHandlersWithField } from "../Utils/utils";
 import { pipe } from "../function";
 
@@ -109,4 +110,28 @@ console.log(jsonParseMoreConcise('{"foo": "bar"}'));
 
 console.log(jsonParse('{invalid}'));
 console.log(jsonParseMoreConcise('{invalid}'));
+
+type Response = Readonly<{
+    body: string,
+    contentLength: number
+}>;
+
+type JsonStringifyError = Readonly<{
+    type: 'JsonStringifyError',
+    error: Error
+}>;
+
+const createResponse = (payload: unknown): E.Either<JsonStringifyError, Response> => 
+    pipe(
+        payload,
+        J.stringify,
+        E.map((s) => ({
+            body: s,
+            contentLength: s.length
+        })),
+        E.mapLeft((e) => ({
+            type: "JsonStringifyError",
+            error: E.toError(e)
+        }))
+    );
 
