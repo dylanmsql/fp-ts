@@ -31,10 +31,22 @@ export function pipe<A, B, C, D, E, F, G, H>(
   gh: (g: G) => H
 ): H;
 
-export function pipe(...args: any[]): any {
-    return args.reduce((acc, fn) => (typeof fn === 'function' ? fn(acc) : acc), args[0]);
+export function pipe(a: unknown, ...fns: Array<(arg: unknown) => unknown>): unknown {
+  return fns.reduce((acc, fn) => fn(acc), a);
 }
 
 export function identity<A>(a: A): A {
   return a;
+}
+
+export function flow<A, B>(f1: (a: A) => B): (a: A) => B;
+export function flow<A, B, C>(f1: (a: A) => B, f2: (b: B) => C): (a: A) => C;
+export function flow<A, B, C, D>(f1: (a: A) => B, f2: (b: B) => C, f3: (c: C) => D): (a: A) => D;
+export function flow<A, B, C, D, E>(f1: (a: A) => B, f2: (b: B) => C, f3: (c: C) => D, f4: (d: D) => E): (a: A) => E;
+export function flow<A, B, C, D, E, F>(f1: (a: A) => B, f2: (b: B) => C, f3: (c: C) => D, f4: (d: D) => E, f5: (e: E) => F): (a: A) => F;
+export function flow<A, B, C, D, E, F, G>(f1: (a: A) => B, f2: (b: B) => C, f3: (c: C) => D, f4: (d: D) => E, f5: (e: E) => F, f6: (f: F) => G): (a: A) => G;
+export function flow<A, B, C, D, E, F, G, H>(f1: (a: A) => B, f2: (b: B) => C, f3: (c: C) => D, f4: (d: D) => E, f5: (e: E) => F, f6: (f: F) => G, f7: (g: G) => H): (a: A) => H;
+
+export function flow(...fns: Array<(arg: unknown) => unknown>) {
+    return (input: unknown) => fns.reduce((acc, fn) => fn(acc), input);
 }
