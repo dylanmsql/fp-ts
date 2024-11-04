@@ -17,6 +17,7 @@ export const fold = <E, A, B>(onLeft: (e: E) => B, onRight: (a: A) => B) => (ma:
 export const foldW = <E, A, B, C>(onLeft: (e: E) => B, onRight: (a: A) => C) => (ma: Either<E, A>): B | C => isRight(ma) ? onRight(ma.right) : onLeft(ma.left);
 export const map = <E, A, B>(onRight: (a: A) => B) => (ma: Either<E, A>): Either<E, B> => isRight(ma) ? right(onRight(ma.right)) : left(ma.left);
 export const mapLeft = <E, A, F>(onLeft: (e: E) => F) => (ma: Either<E, A>): Either<F, A> => isLeft(ma) ? left(onLeft(ma.left)) : right(ma.right);
+export const bimap = <E, A, F, B>(onLeft: (e: E) => F, onRight: (a: A) => B) => (ma: Either<E, A>): Either<F, B> => isLeft(ma) ? left(onLeft(ma.left)) : right(onRight(ma.right));
 export const tryCatch = <E, A>(f: () => A, onThrow: (e: unknown) => E): Either<E, A> => {
     try {
         return right(f());
