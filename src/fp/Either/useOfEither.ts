@@ -139,3 +139,9 @@ const createResponse = (payload: unknown): E.Either<JsonStringifyError, Response
         }))
     );
 
+console.log(createResponse({user: "John", password: "azertyuiop"}));
+const circular: any = {}
+circular.self = circular;
+console.log(createResponse(circular));
+
+
