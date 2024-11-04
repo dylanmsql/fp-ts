@@ -1,7 +1,7 @@
 import * as E from "./either";
 import * as J from "../Json/json";
 import { makeFoldHandlersWithField } from "../Utils/utils";
-import { pipe } from "../function";
+import { pipe, flow } from "../function";
 
 type NotEnoughBalance = Readonly<{
     type: 'NotEnoughBalance',
@@ -121,17 +121,21 @@ type JsonStringifyError = Readonly<{
     error: Error
 }>;
 
+const JsonStringify = flow(
+    J.stringify,
+    E.mapLeft((e): JsonStringifyError => ({
+        type: "JsonStringifyError",
+        error: E.toError(e)
+    }))
+);
+
 const createResponse = (payload: unknown): E.Either<JsonStringifyError, Response> => 
     pipe(
         payload,
-        J.stringify,
+        JsonStringify,
         E.map((s) => ({
             body: s,
             contentLength: s.length
-        })),
-        E.mapLeft((e) => ({
-            type: "JsonStringifyError",
-            error: E.toError(e)
         }))
     );
 
