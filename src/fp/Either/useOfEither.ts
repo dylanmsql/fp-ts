@@ -82,3 +82,31 @@ console.log('Balance problem:', applyCheckout(
     { total: 30, items: [] },
     { balance: 20, isFrozen: false, currency: '€' }
 ));
+
+type JsonParseError = Readonly<{
+    type: 'JsonParseError',
+    error: Error
+}>;
+
+const jsonParse = (text: string): E.Either<JsonParseError, unknown> => E.tryCatch(
+    () => JSON.parse(text),
+    (e) => ({
+        type: 'JsonParseError',
+        error: E.toError(e)
+    })
+)
+
+const jsonParseMoreConcise: (text: string) => E.Either<JsonParseError, unknown> = E.tryCatchK(
+    JSON.parse,
+    (e) => ({
+        type: 'JsonParseError',
+        error: E.toError(e)
+    })
+)
+
+console.log(jsonParse('{"foo": "bar"}'));
+console.log(jsonParseMoreConcise('{"foo": "bar"}'));
+
+console.log(jsonParse('{invalid}'));
+console.log(jsonParseMoreConcise('{invalid}'));
+
